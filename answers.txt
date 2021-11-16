@@ -1,0 +1,226 @@
+Design database for Zen class programme
+
+Q1 users
+A1 db.users.insert([
+    {
+        firstName: "a",
+        lastName: "b",
+        id: 1
+    },
+    {
+        firstName: "c",
+        lastName: "d",
+        id: 2
+    },
+    {
+        firstName: "e",
+        lastName: "f",
+        id: 3
+    },
+    {
+        firstName: "g",
+        lastName: "h",
+        id: 4
+    },
+    {
+        firstName: "i",
+        lastName: "j",
+        id: 5
+    },])
+    
+Q2 codecata
+A2. db.codecata.insert([
+    {
+        problem_number: 1,
+        students: [1,2,3,4,5]
+    },
+    {
+        problem_number: 2,
+        students: [1,4,5]
+    },
+    {
+        problem_number: 3,
+        students: [2,5]
+    },
+    {
+        problem_number: 4,
+        students: [5]
+    },
+    {
+        problem_number: 5,
+        students: [1,3,4,5]
+    },])
+
+
+Q3 attendance
+A3 db.attendance.insert([
+    {
+        date: new Date("2021-10-18T16:00:00Z"),
+        students: [1,2,3,4,5]
+    },
+    {
+       date: new Date("2021-10-08T16:00:00Z"),
+        students: [1,4,5]
+    },
+    {
+        date: new Date("2021-10-19T16:00:00Z"),
+        students: [2,5]
+    },
+    {
+        date: new Date("2021-10-28T16:00:00Z"),
+        students: [5]
+    },
+    {
+        date: new Date("2021-11-18T16:00:00Z"),
+        students: [1,3,4,5]
+    },])
+
+Q4 topics
+A4 db.topics.insert([
+    {
+        topic_name: "abc",
+        date: new Date("2021-10-18T16:00:00Z"),
+        students: [1,2,3,4,5]
+    },
+    {
+        topic_name: "def",
+       date: new Date("2021-10-08T16:00:00Z"),
+        students: [1,4,5]
+    },
+    {
+        topic_name: "ghi",
+        date: new Date("2021-10-19T16:00:00Z"),
+        students: [2,5]
+    },
+    {
+        topic_name: "jkl",
+        date: new Date("2021-10-28T16:00:00Z"),
+        students: [5]
+    },
+    {
+        topic_name: "mno",
+        date: new Date("2021-11-18T16:00:00Z"),
+        students: [1,3,4,5]
+    },])
+
+
+Q5 tasks
+A5 db.tasks.insert([
+    { 
+        task_number : 1,
+        date: new Date("2021-10-18T16:00:00Z"),
+        students: [1,2,3,5]
+    },
+    {
+        task_number : 2,
+       date: new Date("2021-10-08T16:00:00Z"),
+        students: [1,4,5]
+    },
+    {
+        task_number : 3,
+        date: new Date("2021-10-19T16:00:00Z"),
+        students: [1, 2,5]
+    },
+    {
+        task_number : 4,
+        date: new Date("2021-10-28T16:00:00Z"),
+        students: [3,5]
+    },
+    {
+        task_number : 5,
+        date: new Date("2021-11-18T16:00:00Z"),
+        students: [1,3,4,5]
+    },])
+
+Q6 company_drives
+A6 db.companyDrives.insert([
+    {
+        company_name: "abc",
+        date: new Date("2021-09-18T16:00:00Z"),
+        students: [1,2,3,4,5]
+    },
+    {
+        company_name: "def",
+       date: new Date("2021-10-09T16:00:00Z"),
+        students: [1,4,5]
+    },
+    {
+        company_name: "ghi",
+        date: new Date("2021-10-29T16:00:00Z"),
+        students: [2,5]
+    },
+    {
+        company_name: "jkl",
+        date: new Date("2021-10-18T16:00:00Z"),
+        students: [5]
+    },
+    {
+        company_name: "mno",
+        date: new Date("2021-11-18T16:00:00Z"),
+        students: [1,3,4,5]
+    },])
+
+Q7 mentors
+A7 db.mentors.insert([
+    {
+        firstName: "k",
+        lastName: "l",
+        id: 1,
+        mentee: [1, 3, 5]
+    },
+    {
+        firstName: "m",
+        lastName: "n",
+        id: 2,
+        mentee: [2, 4]
+    },
+    ])
+
+Q8. Find all the topics and tasks which are thought in the month of October
+A8. db.topics.find( { date:  { $gte: new Date("2021-10-01T00:00:00Z"), $lt: new Date("2021-11-01T00:00:00Z") } }  )
+    db.tasks.find( { date:  { $gte: new Date("2021-10-01T00:00:00Z"), $lt: new Date("2021-11-01T00:00:00Z") } }  )
+
+Q9. Find all the company drives which appeared between 15 oct-2020 and 31-oct-2020
+A9. db.companyDrives.find( { date:  { $gte: new Date("2021-10-15T00:00:00Z"), $lt: new Date("2021-11-01T00:00:00Z") } }  )
+
+Q10. Find all the company drives and students who are appeared for the placement.
+A10  db.companyDrives.find().map((item) => {
+    let placement_info = {};
+    placement_info.company_name = item.company_name;
+    let attended = [];
+    item.students.forEach((student)=> {
+        db.users.find({id: student}).forEach((val)=> {
+            attended.push(val.firstName + " " + val.lastName)
+        })
+    })
+    placement_info.attended = attended;
+    return placement_info;
+    })
+
+Q11. Find the number of problems solved by the user in codekata
+A11. // finding student id for provided student name "i" "j"
+      let studentId;
+      db.users.find({firstName: "i", lastName: "j"})
+        .toArray()
+        .then((docs) => {studentId = docs[0].id});
+
+      // use student id to find number of problems solved by that student
+      db.codecata.aggregate(
+    [
+      {
+          $match: {
+              students: {
+                  $eq: studentId
+              }
+              
+          }
+      },
+      {
+        $count: "problems_solved"  
+      }
+    ]
+    )
+
+Q12. Find all the mentors with who has the mentee's count more than 15
+A12. db.mentors.find({"mentee.14": {$exists: true}})
+
